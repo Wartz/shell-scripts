@@ -12,13 +12,16 @@
 # Get the current logged in user
 loggedInUser=$( scutil <<< "show State:/Users/ConsoleUser" | awk '/Name :/ && ! /loginwindow/ { print $3 }' )
 
+# Get the kerberos ticket UPN
+userPrincipalName=$(klist | awk '/Principal:/{print $2}')
+
 # Make sure someone is logged in
 if [[ -z $loggedInUser ]]; then
     echo "No user signed in"
     exit 1
 else
-    # Destroy any existing kerberos tickets
-    kdestroy -p $loggedInUser@CAMPUS.ITHACA.LAN
+    # Destroy any existing kerberos tickets for current user
+    kdestroy -p "$userPrincipalName"
 
     # Delete the NoMAD application password from the Login keychain
     security delete-generic-password -l NoMAD "/Users/$loggedInUser/Library/Keychains/login.keychain-db"
