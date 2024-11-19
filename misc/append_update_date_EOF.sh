@@ -2,6 +2,7 @@
 
 # REGEX IS STILL THE MONARCHY
 # Joe Schlimmer
+# regex101.com saves my butt again
 
 regexDate="[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}"
 
